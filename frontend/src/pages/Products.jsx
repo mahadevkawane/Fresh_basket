@@ -7,7 +7,7 @@ const Products = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/products")
+      .get("https://fresh-basket-backend.onrender.com/api/products")
       .then((res) => setProducts(res.data))
       .catch((err) => console.error("Error fetching products:", err));
   }, []);
@@ -26,7 +26,7 @@ const Products = () => {
             {/* Image */}
             <div className="overflow-hidden rounded-t-lg h-60 flex items-center justify-center bg-gray-50">
               <img
-                src={`http://localhost:5000/Images/${product.image}`}
+                src={`https://fresh-basket-backend.onrender.com/Images/${product.image}`}
                 alt={product.name}
                 className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
               />

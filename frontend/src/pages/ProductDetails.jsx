@@ -4,24 +4,22 @@ import axios from "axios";
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // <-- Add useNavigate
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
-  // here we get data from backend i.e from app.get()
+  // Fetch product details from Render backend
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/products/${id}`) // give data to frontend reciving from backend
+      .get(`https://fresh-basket-backend.onrender.com/api/products/${id}`)
       .then((res) => setProduct(res.data))
       .catch((err) => console.error(err));
-  }, [id]); // the dependency array runs everytime the id changes 
-            // variant of useEffect() hook
+  }, [id]);
 
-
-// here we get data from backend 
+  // Add product to cart
   const addToCart = async () => {
     try {
-      await axios.post("http://localhost:5000/api/cart", {
+      await axios.post("https://fresh-basket-backend.onrender.com/api/cart", {
         productId: product._id,
         productName: product.name,
         image: product.image,
@@ -43,7 +41,7 @@ const ProductDetail = () => {
         {/* Image */}
         <div className="flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden h-96">
           <img
-            src={`http://localhost:5000/Images/${product.image}`}
+            src={`https://fresh-basket-backend.onrender.com/Images/${product.image}`}
             alt={product.name}
             className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
           />
@@ -77,7 +75,7 @@ const ProductDetail = () => {
 
           {/* Back Button */}
           <button
-            onClick={() => navigate("/products")} // <-- Go back to products page
+            onClick={() => navigate("/products")}
             className="bg-green-500 text-white py-2 px-2 rounded hover:bg-blue-600 transition"
           >
             ← Back to Products
