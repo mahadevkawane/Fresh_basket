@@ -1,89 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
-const ProductDetail = () => {
+const ProductDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1);
 
-  // Fetch product details from Render backend
   useEffect(() => {
     axios
       .get(`https://fresh-basket-backend.onrender.com/api/products/${id}`)
       .then((res) => setProduct(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Error fetching product:", err));
   }, [id]);
 
-  // Add product to cart
-  const addToCart = async () => {
-    try {
-      await axios.post("https://fresh-basket-backend.onrender.com/api/cart", {
-        productId: product._id,
-        productName: product.name,
-        image: product.image,
-        price: product.price,
-        quantity: Number(quantity),
-      });
-      alert("Added to cart!");
-    } catch (err) {
-      console.error("Error adding to cart:", err);
-      alert("Failed to add to cart");
-    }
-  };
-
-  if (!product) return <p className="p-8 text-center text-xl">Loading...</p>;
+  if (!product) {
+    return <div className="p-8 text-center">Loading product details...</div>;
+  }
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="p-8 bg-gray-100 min-h-screen flex justify-center items-center">
+      <div className="bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full">
         {/* Image */}
-        <div className="flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden h-96">
+        <div className="flex justify-center mb-6">
           <img
             src={`https://fresh-basket-backend.onrender.com/Images/${product.image}`}
             alt={product.name}
-            className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
+            className="w-80 h-80 object-contain rounded-lg shadow-md"
           />
         </div>
 
-        {/* Product Details */}
-        <div className="flex flex-col justify-between">
-          <div>
-            <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-            <p className="text-gray-700 mb-4">{product.description}</p>
-            <p className="text-2xl font-bold mb-6">₹{product.price}</p>
-          </div>
+        {/* Info */}
+        <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+        <p className="text-gray-700 mb-4">{product.description}</p>
+        <p className="text-2xl font-bold text-green-600 mb-6">₹{product.price}</p>
 
-          {/* Add to Cart */}
-          <div className="flex items-center gap-4 mb-4">
-            <input
-              type="number"
-              value={quantity}
-              min="1"
-              onChange={(e) => setQuantity(e.target.value)}
-              className="w-24 border rounded p-2 text-center"
-            />
-            <button
-              onClick={addToCart}
-              className="bg-green-500 text-white py-2 px-6 rounded font-medium 
-                         hover:bg-blue-600 hover:scale-105 transform transition duration-300"
-            >
-              Add to Cart
-            </button>
-          </div>
-
-          {/* Back Button */}
-          <button
-            onClick={() => navigate("/products")}
-            className="bg-green-500 text-white py-2 px-2 rounded hover:bg-blue-600 transition"
-          >
-            ← Back to Products
-          </button>
-        </div>
+        {/* Button */}
+        <button className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300">
+          Add to Cart
+        </button>
       </div>
     </div>
   );
 };
 
-export default ProductDetail;
+export default ProductDetails;

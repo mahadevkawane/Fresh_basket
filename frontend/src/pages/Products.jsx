@@ -36,7 +36,7 @@ const Products = () => {
             <div className="p-4 flex-1 flex flex-col justify-between">
               <div>
                 <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
-                
+
                 {/* Short Description */}
                 {product.description && (
                   <p className="text-gray-600 text-sm mb-2 line-clamp-2">
